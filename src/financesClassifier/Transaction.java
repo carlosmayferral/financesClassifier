@@ -21,7 +21,7 @@ public class Transaction {
 	/**
 	 * The part of the description used for ID purposes.
 	 */
-	private String idText; 
+	private String merchantId; 
 	
 	/**
 	 * The assigned category.
@@ -44,7 +44,7 @@ public class Transaction {
 		this.fullText = description;
 		this.amount = amount;
 		
-		this.idText = null;
+		this.merchantId = null;
 		this.category = Category.UNCLASSIFIED;
 	}
 
@@ -65,8 +65,8 @@ public class Transaction {
 	/**
 	 * @return the idText
 	 */
-	public String getIdText() {
-		return idText;
+	public String getMerchantId() {
+		return merchantId;
 	}
 
 	/**
@@ -86,8 +86,8 @@ public class Transaction {
 	/**
 	 * @param idText the idText to set
 	 */
-	public void setIdText(String idText) {
-		this.idText = idText;
+	public void setMerchantId(String idText) {
+		this.merchantId = idText;
 	}
 
 	/**

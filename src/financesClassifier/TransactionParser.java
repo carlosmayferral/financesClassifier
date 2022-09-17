@@ -1,12 +1,15 @@
 package financesClassifier;
 
-import java.text.DateFormatSymbols;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
+/**
+ * Takes a string representation of a transaction and parses it into a {@link Transaction} object. Delegates the responsibility of 
+ * generating the transaction ID to {@link DescriptionParser}.
+ * @author Carlos May Ferral
+ *
+ */
 public class TransactionParser {
 
 	private static final String DELIMITER = ",";
@@ -18,8 +21,9 @@ public class TransactionParser {
 	private static final int DAY_INDEX = 0;
 	private static final int MONTH_INDEX = 1;
 	
-	private Locale locale;
 	private String[] monthAbbrevs;
+	
+	private DescriptionParser descriptionParser;
 	
 	public TransactionParser() {
 		monthAbbrevs = new String[] {
@@ -36,7 +40,7 @@ public class TransactionParser {
 				"Nov",
 				"Dec"
 		};
-		
+		descriptionParser = new DescriptionParser();
 	}
 	
 
@@ -53,15 +57,14 @@ public class TransactionParser {
 		Transaction transaction = new Transaction(date,description,amount);
 		
 		//Parse ID from description
-		String classDescriptor = parseId(description);
+		String merchantDescriptor = descriptionParser.parseMerchant(description);
+		
+		transaction.setMerchantId(merchantDescriptor);
+		
 		
 		return transaction;
 	}
 
-	private String parseId(String description) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 	private Double parseAmount(String string) {
@@ -75,7 +78,6 @@ public class TransactionParser {
 		int day = Integer.parseInt(tokens[DAY_INDEX]);
 		int month = 0;
 		String monthAbbreviation = tokens[MONTH_INDEX];
-		System.out.println(monthAbbreviation);
 		for(int i = 0; i < monthAbbrevs.length; i++) {
 			if(monthAbbreviation.equals(monthAbbrevs[i])) {
 				month = i+1;
@@ -96,19 +98,19 @@ public class TransactionParser {
 		
 		//STUB
 		Transaction transaction1 = new Transaction(LocalDate.of(1991, 10, 17),"",0.0);
-		transaction1.setIdText("UBER *TRIP");
+		transaction1.setMerchantId("UBER *TRIP");
 		result.add(transaction1);
 		Transaction transaction2 = new Transaction(LocalDate.of(1991, 10, 17),"",0.0);
-		transaction2.setIdText("CARTE CREPES");
+		transaction2.setMerchantId("CARTE CREPES");
 		result.add(transaction2);
 		Transaction transaction3 = new Transaction(LocalDate.of(1991, 10, 17),"",0.0);
-		transaction3.setIdText("COMMERCIAL COIN LAUNDRET");
+		transaction3.setMerchantId("COMMERCIAL COIN LAUNDRET");
 		result.add(transaction3);
 		Transaction transaction4 = new Transaction(LocalDate.of(1991, 10, 17),"",0.0);
-		transaction4.setIdText("TRANSFER - Samma Real Estat");
+		transaction4.setMerchantId("TRANSFER - Samma Real Estat");
 		result.add(transaction4);
 		Transaction transaction5 = new Transaction(LocalDate.of(1991, 10, 17),"",0.0);
-		transaction5.setIdText("GREEN REFECTORY");
+		transaction5.setMerchantId("GREEN REFECTORY");
 		result.add(transaction5);
 		
 		
