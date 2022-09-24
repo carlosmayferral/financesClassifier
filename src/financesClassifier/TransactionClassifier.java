@@ -19,13 +19,18 @@ public class TransactionClassifier {
 
 	public void classifyTransaction(Transaction transaction, ConsoleInterface consoleInterface) {
 		
-		System.out.println("Classifying transaction: " + transaction.getIdText());
-		if(transactionMapping.containsKey(transaction.getIdText())) {
-			transaction.setCategory(transactionMapping.get(transaction.getIdText()));
+		
+		
+		System.out.println("Classifying transaction: " + transaction.getMerchantId());
+		if(transactionMapping.containsKey(transaction.getMerchantId())) {
+			transaction.setCategory(transactionMapping.get(transaction.getMerchantId()));
 		}
 		else {
-			transaction.setCategory(consoleInterface.promptForCategory(transaction.getIdText()));
-			transactionMapping.put(transaction.getIdText(),transaction.getCategory());
+			transaction.setCategory(consoleInterface.promptForCategory(transaction.getMerchantId()));
+			//Only remember category if not a transfer
+			if(!transaction.getMerchantId().contains("TRANSFER")) {
+				transactionMapping.put(transaction.getMerchantId(),transaction.getCategory());
+			}
 		}
 		System.out.println("Assigned to: " + transaction.getCategory().toString());
 		

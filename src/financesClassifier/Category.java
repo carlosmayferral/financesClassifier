@@ -1,9 +1,19 @@
 package financesClassifier;
 
 public enum Category {
-	Subscriptions,
 	Grocery_Shopping,
-	UNCLASSIFIED, 
+	Bills_and_Living_Expenses,
+	Purchasing_essential,
+	Purchasing_entertainment_and_hobbies,
+	Eating_out,
+	Subscriptions,
+	Health_and_Fitness,
+	Upskilling,
 	Transportation,
-	Living_Expenses
+	UNCLASSIFIED,
+	CashBack,
+	Salary,
+	Support,
+	Relationship,
+	Rent
 }

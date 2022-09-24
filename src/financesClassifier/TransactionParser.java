@@ -44,6 +44,12 @@ public class TransactionParser {
 	}
 	
 
+	/**
+	 * Takes a line representing a transaction (assumed comma delimited) and returns a 
+	 * {@link Transaction}.
+	 * @param line - The string representation of a transaction from a log file, comma delimited.
+	 * @return - The {@link Transaction} corresponding to the string. Or null if the transaction is pending.
+	 */
 	public Transaction parseTransaction(String line) {
 		
 		//Parse into Delimited
@@ -59,6 +65,11 @@ public class TransactionParser {
 		//Parse ID from description
 		String merchantDescriptor = descriptionParser.parseMerchant(description);
 		
+		//Return null if invalid.
+		if(merchantDescriptor == null) {
+			return null;
+		}
+		
 		transaction.setMerchantId(merchantDescriptor);
 		
 		
@@ -68,10 +79,11 @@ public class TransactionParser {
 
 
 	private Double parseAmount(String string) {
-		return Double.parseDouble(string.replaceAll("\"", ""));
+		return Double.parseDouble(string.replaceAll("\"", "").replaceAll(",", ""));
 	}
 
 	private LocalDate parseDate(String date) {
+		date = date.strip();
 		//divide by spaces
 		String[] tokens = date.split(" ");
 		int year = Integer.parseInt(tokens[YEAR_INDEX]);
@@ -88,7 +100,7 @@ public class TransactionParser {
 	}
 
 	/**
-	 * Returns the equivalent transactions from parsing a group of strings.
+	 * Returns the equivalent transactions from parsing a group of strings. Ignores pending transactions.
 	 * @param readFile
 	 * @return
 	 */
@@ -96,26 +108,14 @@ public class TransactionParser {
 		
 		ArrayList<Transaction> result = new ArrayList<>();
 		
-		//STUB
-		Transaction transaction1 = new Transaction(LocalDate.of(1991, 10, 17),"",0.0);
-		transaction1.setMerchantId("UBER *TRIP");
-		result.add(transaction1);
-		Transaction transaction2 = new Transaction(LocalDate.of(1991, 10, 17),"",0.0);
-		transaction2.setMerchantId("CARTE CREPES");
-		result.add(transaction2);
-		Transaction transaction3 = new Transaction(LocalDate.of(1991, 10, 17),"",0.0);
-		transaction3.setMerchantId("COMMERCIAL COIN LAUNDRET");
-		result.add(transaction3);
-		Transaction transaction4 = new Transaction(LocalDate.of(1991, 10, 17),"",0.0);
-		transaction4.setMerchantId("TRANSFER - Samma Real Estat");
-		result.add(transaction4);
-		Transaction transaction5 = new Transaction(LocalDate.of(1991, 10, 17),"",0.0);
-		transaction5.setMerchantId("GREEN REFECTORY");
-		result.add(transaction5);
-		
-		
+		for(String line : transactionTextLines) {
+			//only add to results if not null
+			Transaction transaction = parseTransaction(line);
+			if(transaction != null) {
+				result.add(parseTransaction(line));
+			}
+		}
 		return result;
-		
 	}
 
 }

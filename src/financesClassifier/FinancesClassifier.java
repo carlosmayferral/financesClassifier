@@ -13,7 +13,9 @@ import java.util.Scanner;
 
 public class FinancesClassifier {
 	
-	private static final String MAPPINGS_PATH = null;
+	private static final String MAPPINGS_PATH = "MerchantMappings.csv";
+	
+	
 	private ConsoleInterface consoleInterface;
 	private TransactionReader transactionReader;
 	private TransactionParser transactionParser;
